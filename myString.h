@@ -5,7 +5,7 @@ class MyString{
     size_t sz;
     char *arr;
 	
-	void strCopy(char* dest, const char* src, int fromIndex, int toIndex);
+	void strCopy(char* dest, const char* src, int fromIndex, int toIndex, int extractIndex);
 	
 	char* resize(size_t newSz);
 public:

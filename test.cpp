@@ -4,25 +4,18 @@
 #include <cstring>
 
 int main(){
-MyString a = "moroooooafjdjlfsjlkj";
+MyString a = "abc";
 
+a.insert(0, "yz");
 a.print();
 
-MyString b = a;
+a.insert(a.size() -1, "blablaa");
+a.print();
 
-//assertEquals(b, a);
-a = "jjj";
+MyString b = "";
+b.insert(0, "morooo");
 b.print();
-
-b = a;
-
-b.print();
-b.push_back('a');
-b.print();
-
-std::cout << b.pop_back() << std::endl;
-b.print();
-
+std::cout << b.size() << std::endl;
 /*
 std::cout << a << std::endl;
 

@@ -59,31 +59,28 @@ void MyString::push_back(char c){
 
 //what to do if index is bigger than the size of the original string?
 void MyString::insert(int index, const char* str){
-	int strSz = strlen(str);
-	int newSz = sz + strSz;
-	char temp[newSz + 1];			//make space for the new characters plus the null character
+	size_t strSz = strlen(str);
+	size_t newSz = sz + strSz;
+	size_t oldSz = sz;
 	
-	if(index > 0 && index < sz - 1){	//insertion in the middle of the string
-		strCopy(temp, arr, 0, index);
-		strCopy(temp, str, index, (index + strSz));
-		strCopy(temp, arr, (index + strSz), newSz);
-	}
-	temp[newSz] = '\0';
+	const char* temp = resize(newSz);
+	strCopy(arr, temp, 0, index, 0);
+	strCopy(arr, str, index, (index + strSz), 0);
+	strCopy(arr, temp, (index + strSz), newSz, index);
+
 	
-	delete[] arr;
-	arr = new char[newSz + 1];
-	std::memcpy(arr, temp, (newSz + 1 )*sizeof *arr);
-	sz = newSz;
+	arr[newSz] = '\0';
 }
 
-void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex){
+void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, int srcExtractIndex){
 	for(int i = fromIndex; i < toIndex; i++){
-			dest[i] = src[i - fromIndex];
+		dest[i] = src[srcExtractIndex];
+		srcExtractIndex++;
 	}
 }
 
 char* MyString::resize(size_t newSz){
-	char temp[newSz + 1];
+	char temp[newSz];
 	if(sz <= newSz){
 		std::memcpy(temp, arr, sz*sizeof *arr);
 	}else{
