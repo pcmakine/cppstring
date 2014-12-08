@@ -20,6 +20,8 @@ b.print();
 b.push_back('a');
 b.print();
 
+std::cout << b.pop_back() << std::endl;
+b.print();
 
 /*
 std::cout << a << std::endl;

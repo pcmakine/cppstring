@@ -7,7 +7,7 @@ class MyString{
 	
 	void strCopy(char* dest, const char* src, int fromIndex, int toIndex);
 	
-	void resize(size_t newSz);
+	char* resize(size_t newSz);
 public:
     MyString(const char *s);
 

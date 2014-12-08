@@ -51,20 +51,10 @@ void MyString::swap(MyString& str){
 }
 
 void MyString::push_back(char c){
-	resize(sz + 1);
+	char* temp = resize(sz + 1);
+	std::memcpy(arr, temp,  sz*sizeof *arr);
 	arr[sz - 1] = c;
 	arr[sz] = '\0';
-
-/*	char temp[sz+2];			//make space for the new character plus the null character
-	std::memcpy(temp, arr, sz*sizeof *arr);
-	temp[sz] = c;
-	temp[sz+1] = '\0';
-	
-	sz++;
-	delete[] arr;
-	arr = new char[sz+1];
-	std::memcpy(arr, temp, sz*sizeof *arr);
-	arr[sz] = '\0';*/
 }
 
 //what to do if index is bigger than the size of the original string?
@@ -92,23 +82,31 @@ void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex){
 	}
 }
 
-void MyString::resize(size_t newSz){
+char* MyString::resize(size_t newSz){
 	char temp[newSz + 1];
-	std::memcpy(temp, arr, sz*sizeof *arr);
-	
+	if(sz <= newSz){
+		std::memcpy(temp, arr, sz*sizeof *arr);
+	}else{
+		std::memcpy(temp, arr, newSz*sizeof *arr);
+	}
+
 	delete[] arr;
 	sz = newSz;
 	arr = new char[sz + 1];
-	std::memcpy(arr, temp,  sz*sizeof *arr);
+	char* p = temp;
+	return p;
 }
 
 
-char MyString::pop_back(){	//pop_back as requested in the instructions
+char MyString::pop_back(){	//pop_back as demonstrated in the instructions
 	char c = '\0';
 	if(sz > 0){
 		c = arr[sz - 1];
-		return c;
+		char* temp = resize(sz-1);
+		std::memcpy(arr, temp,  sz*sizeof *arr);
+		arr[sz] = '\0';
 	}
+	return c;
 }
 
 //move assignment
