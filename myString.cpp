@@ -2,8 +2,6 @@
 #include <cstring>
 #include <iostream>
 
-//todo add the null character at the end of the string
-
 MyString::MyString(const char* str){
     sz = strlen(str);	
     arr = new char[sz+1];
@@ -67,9 +65,11 @@ void MyString::insert(int index, const char* str){
 	strCopy(arr, temp, 0, index, 0);
 	strCopy(arr, str, index, (index + strSz), 0);
 	strCopy(arr, temp, (index + strSz), newSz, index);
-
-	
 	arr[newSz] = '\0';
+}
+
+void MyString::insert(int index, MyString& str){
+	insert(index, str.elements());
 }
 
 void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, int srcExtractIndex){

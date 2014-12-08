@@ -32,6 +32,8 @@ public:
 	
 	void insert(int index, const char* str);
 	
+	void insert(int index, MyString& str);
+	
 	char pop_back();
 
 	friend std::ostream& operator<<(std::ostream& os, const MyString& dt);
