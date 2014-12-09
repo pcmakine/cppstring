@@ -59,7 +59,6 @@ void MyString::push_back(char c){
 void MyString::insert(int index, const char* str){
 	size_t strSz = strlen(str);
 	size_t newSz = sz + strSz;
-	size_t oldSz = sz;
 	
 	const char* temp = resize(newSz);
 	strCopy(arr, temp, 0, index, 0);
@@ -70,6 +69,11 @@ void MyString::insert(int index, const char* str){
 
 void MyString::insert(int index, MyString& str){
 	insert(index, str.elements());
+}
+
+void MyString::insert(int index, const char c){
+    const char* p = &c;
+    insert(index, p);
 }
 
 void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, int srcExtractIndex){

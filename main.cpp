@@ -1,7 +1,18 @@
+/*compile with this command:
+g++ -Wall -std=c++11 myString.cpp tests.cpp main.cpp testdriver.cpp -o stringtest
+*/
+
 #include "myString.h"
 #include "tests.h"
 #include <iostream>
 #include <cstring>
+#include <vector>
+#include <map>
+
+
+void test(){
+    std::cout << "test success" << std::endl;
+}
 
 int main(){
 MyString a = "abc";
@@ -21,8 +32,25 @@ b.insert(2, a);
 
 b.print();
 
+b.insert(b.size(), 'u');
+b.print();
+
 Tests t;
 t.testInsertStringLiteral();
+
+//std::vector<void (*)()> vectoroffunctions;
+void (*testpointer)() = test;
+//vectoroffunctions.push_back(testpointer);
+
+std::map<void (*)(),std::string> map;
+
+map[testpointer] = "jee";
+map.begin()->first();
+
+//vectoroffunctions[0]();
+
+//testpointer();
+//test();
 
 
 

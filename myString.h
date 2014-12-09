@@ -33,6 +33,8 @@ public:
 	void insert(int index, const char* str);
 	
 	void insert(int index, MyString& str);
+
+    void insert(int index, char c);
 	
 	char pop_back();
 
