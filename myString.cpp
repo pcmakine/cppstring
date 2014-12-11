@@ -2,42 +2,63 @@
 #include <cstring>
 #include <iostream>
 
+bool MyString::debug = false;
+
 MyString::MyString() : MyString(""){
 }
 
 MyString::MyString(const char* str){
-//	std::cout << "constructor called" << std::endl;
+	if(debug){
+		std::cout << "constructor called" << std::endl;
+	}
+
     sz = strlen(str);	
     arr = new char[sz+1];
 	std::memcpy(arr, str, sz*sizeof *arr);
 	arr[sz] = '\0';
 }
 
-MyString::MyString(MyString const& str){
-//	std::cout << "copy constructor called" << std::endl;
-    sz = str.size();
-    arr = new char[sz];
-    std::memcpy(arr, str.elements(), sz*sizeof *arr);
+MyString::MyString(MyString const& str): 
+	sz(str.size()), arr(new char[str.size()+1]){
+	if(debug){
+		std::cout << "copy constructor called" << std::endl;
+	}
+	
+    std::memcpy(arr, str.elements(), (sz+1)*sizeof *arr);
 }
 
 //copy assignment
-MyString&  MyString::operator = (MyString const& str){
-//	std::cout << "copy assignment called" << std::endl;
-    sz = str.size();
-    arr = new char[sz];
-    std::memcpy(arr, str.elements(), sz*sizeof *arr);
+MyString& MyString::operator = (MyString const& str){
+	if(debug){
+		std::cout << "copy assignment called" << std::endl;
+		std::cout << *this << std::endl;
+		//std::cout << *(this+6) << std::endl;
+		const char cc = this->elements()[5];
+		std::cout << cc << std::endl;
+	}
+	char* temp = new char[str.size()+1];
+	
+	std::memcpy(temp, str.elements(), (str.size()+1)*sizeof *temp);		//+1 to get the endline characted	
+	delete[] arr;
+	arr = temp;
+	sz = str.size();
+	
+	return *this;
 }
 
 //move constructor; must be compiled with -std=c++11
 MyString::MyString(MyString&& str)
-//	std::cout << "move constructor called" << std::endl;
    :sz{str.sz}, arr{str.arr}{
+   	if(debug){
+		std::cout << "move constructor called" << std::endl;
+	}
+
     str.sz = 0;
     str.arr = nullptr;
 }
 
 void MyString::print(){
-    std::cout << arr << std::endl;
+    std::cout << arr << this << std::endl;
 }
 
 int MyString::size() const{
@@ -55,7 +76,7 @@ void MyString::swap(MyString& str){
 	*this = temp;
 }
 
-void MyString::push_back(char c){
+void MyString::push_back(char& c){
 	char* temp = resize(sz + 1);
 	std::memcpy(arr, temp,  sz*sizeof *arr);
 	arr[sz - 1] = c;
@@ -79,7 +100,9 @@ void MyString::insert(int index, MyString& str){
 }
 
 void MyString::insert(int index, const char c){
-    const char* p = &c;
+	char p[2];
+	p[0] = c;
+	p[1] = '\0';
     insert(index, p);
 }
 
@@ -139,6 +162,9 @@ char MyString::operator [](int index){
 }
 
 MyString::~MyString(){
+   	if(debug){
+		std::cout << "destructor called" << std::endl;
+	}
     delete[] arr;
 }
 

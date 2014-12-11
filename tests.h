@@ -7,12 +7,17 @@
 class Tests{
 
 std::map<std::string, bool (Tests::*)()> testFunctions;
-void insertPointerToFunctionMap(std::string fname, bool (Tests::*fpt)());
+void testToMap(std::string fname, bool (Tests::*fpt)());
 
 public:
 	Tests();
 	
 	bool testConstructor();
+	bool testConstructorWithEmptyString();
+	bool testCopyConstructor();
+	bool testCopyAssignment();
+	bool testMoveConstructor();
+	bool testMoveAssignment();
 
 	bool testInsertStringLiteralToBeginning();
 	bool testInsertStringLiteralToMiddle();
@@ -25,6 +30,11 @@ public:
 	bool testInsertCharToBeginning();
 	bool testInsertCharToMiddle();
 	bool testInsertCharToEnd();
+	
+	bool testSize();
+	bool testElements();
+	bool testSwap();
+	bool testPush_back();
 
     std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	

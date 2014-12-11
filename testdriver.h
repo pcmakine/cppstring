@@ -8,16 +8,17 @@ class TestDriver{
 	int passed;
 	int failed;
 
-	static bool failTest();
-	static bool failTest(MyString& expected, MyString& actual);
+	template<typename T, typename V>
+	static bool failTest(T expected, V actual);
 	static bool passTest();
 
 public:
 
 	TestDriver();
-    static bool assertEquals(MyString& str, MyString& otherStr, std::string printIfFailed);
 	static bool assertEquals(MyString& str, MyString& otherStr);
 	static bool assertEquals(MyString& str, std::string& otherStr);
+	static bool assertEquals(const char* actual, std::string& expected);
+	static bool assertEquals(int actual, int expected);
 	void run();
 };
 #endif

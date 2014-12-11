@@ -4,12 +4,11 @@
 class MyString{
     size_t sz;
     char *arr;
-	
 	void strCopy(char* dest, const char* src, int fromIndex, int toIndex, int extractIndex);
 	
 	char* resize(size_t newSz);
 public:
-
+	static bool debug;
 	MyString();
 
     MyString(const char *s);
@@ -31,7 +30,7 @@ public:
 	
 	void swap(MyString& str);
 	
-	void push_back(char c);
+	void push_back(char& c);
 	
 	void insert(int index, const char* str);
 	
