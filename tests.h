@@ -5,16 +5,21 @@
 #include <string>
 
 class Tests{
-TestDriver* driver;
 
-std::map<void (Tests::*)(),std::string> testFunctions;
+std::map<std::string, bool (Tests::*)()> testFunctions;
+void insertPointerToFunctionMap(std::string fname, bool (Tests::*fpt)());
 
 public:
 	Tests();
-	void testInsertStringLiteral();
-    void testInsertChar();
-    void testInsertMyString();
-    std::map<void (Tests::*)(),std::string> getTestFunctions();
+	
+	bool testConstructor();
+	bool testInsertStringLiteralToEnd();
+	bool testInsertStringLiteralToBeginning();
+	bool testInsertStringLiteralToMiddle();
+	
+    bool testInsertChar();
+    bool testInsertMyString();
+    std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	
 	~Tests();
 };

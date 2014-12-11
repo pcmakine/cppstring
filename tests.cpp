@@ -1,32 +1,52 @@
-#include "testdriver.h"
 #include "tests.h"
 #include "myString.h"
 #include <iostream>
 
-Tests::Tests(){
-	driver = new TestDriver();
-    void (Tests::*stringLiteralPtr)() = &Tests::testInsertStringLiteral;
-    testFunctions[stringLiteralPtr] = "testInsertStringLiteral";
-
+void Tests::insertPointerToFunctionMap(std::string fname, bool (Tests::*fpt)()){
+	testFunctions[fname] = fpt;
 }
 
-void Tests::testInsertStringLiteral(){
+Tests::Tests(){
+	insertPointerToFunctionMap("testInsertStringLiteralToMiddle", &Tests::testInsertStringLiteralToMiddle);
+	insertPointerToFunctionMap("testInsertStringLiteralToEnd", &Tests::testInsertStringLiteralToEnd);
+	insertPointerToFunctionMap("testInsertStringLiteralToBeginning", &Tests::testInsertStringLiteralToBeginning);
+	insertPointerToFunctionMap("testConstructor", &Tests::testConstructor);
+}
+
+bool Tests::testConstructor(){
+    MyString a = "Hello";
+	std::string correct = "HEllo";
+	TestDriver::assertEquals(a, correct);
+}
+
+bool Tests::testInsertStringLiteralToEnd(){
     MyString a = "Hello";
     a.insert(a.size(), " world!");
     MyString b = "Hello world!";
-    if(driver->assertEquals(a, b, "failed")){
-        std::cout << "testInsertStringLiteral success!" << std::endl;
-    }
+	TestDriver::assertEquals(a, b, "failed");
 }
 
-void testInsertChar(){
+bool Tests::testInsertStringLiteralToBeginning(){
+    MyString a = "Hello";
+    a.insert(0, "world! ");
+    MyString b = "world! Hello";
+	TestDriver::assertEquals(a, b);
+}
+
+bool Tests::testInsertStringLiteralToMiddle(){
+    MyString a = "Hello";
+    a.insert(2, "world!");
+    MyString b = "Heworld!llo";
+	TestDriver::assertEquals(a, b);
+}
+
+bool testInsertChar(){
 
 }
 
-std::map<void (Tests::*)(),std::string>  Tests::getTestFunctions(){
+std::map<std::string, bool (Tests::*)()>  Tests::getTestFunctions(){
     return testFunctions;
 }
 
 Tests::~Tests(){
-	delete driver;
 }

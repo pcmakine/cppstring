@@ -4,6 +4,7 @@ g++ -Wall -std=c++11 myString.cpp tests.cpp main.cpp testdriver.cpp -o stringtes
 
 #include "myString.h"
 #include "tests.h"
+#include "testdriver.h"
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -15,7 +16,12 @@ void test(){
 }
 
 int main(){
-MyString a = "abc";
+TestDriver t;
+
+t.run();
+
+
+/*MyString a = "abc";
 
 a.insert(0, "yz");
 a.print();
