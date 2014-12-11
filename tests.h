@@ -21,10 +21,11 @@ public:
 	bool testInsertMyStringToBeginning();
 	bool testInsertMyStringToMiddle();
 	bool testInsertMyStringToEnd();
-
 	
-    bool testInsertChar();
-    bool testInsertMyString();
+	bool testInsertCharToBeginning();
+	bool testInsertCharToMiddle();
+	bool testInsertCharToEnd();
+
     std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	
 	~Tests();

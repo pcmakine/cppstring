@@ -12,6 +12,11 @@ bool TestDriver::failTest(){
 	return false;
 }
 
+bool TestDriver::failTest(MyString& actual, MyString& expected){
+	std::cout << "failed!\n" << "Expected: " << expected << "\nActual: " << actual << std::endl;
+	return false;
+}
+
 bool TestDriver::passTest(){
 	std::cout << "passed!" << std::endl;
 	return true;
@@ -30,28 +35,17 @@ bool TestDriver::assertEquals(MyString& str, std::string& otherStr){
 	return passTest();
 }
 
-bool TestDriver::assertEquals(MyString& str, MyString& otherStr, std::string printIfFailed){
-	int size = str.size();
-	if(size != otherStr.size()){
-		return failTest();
+bool TestDriver::assertEquals(MyString& actual, MyString& expected){
+	int size = actual.size();
+	if(size != expected.size()){
+		return failTest(actual, expected);
 	}
 	for(int i= 0; i < size; i++){
-		if(str[i] != otherStr[i]){
-			if(printIfFailed.size() > 0){
-				std::cout << "failed: " << printIfFailed << std::endl;
-			}
-			return false;
+		if(actual[i] != expected[i]){
+			return failTest(actual, expected);
 		}
 	}
 	return passTest();
-}
-
-bool TestDriver::assertEquals(MyString& str, MyString& otherStr){
-	if(!assertEquals(str, otherStr, "")){
-		std::cout << "failed" << std::endl;	
-		return false;
-	}
-	return true;
 }
 
 bool runSingle(Tests& tests, std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){

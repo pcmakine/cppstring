@@ -9,6 +9,7 @@ class TestDriver{
 	int failed;
 
 	static bool failTest();
+	static bool failTest(MyString& expected, MyString& actual);
 	static bool passTest();
 
 public:

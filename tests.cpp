@@ -14,6 +14,7 @@ Tests::Tests(){
 	insertPointerToFunctionMap("testInsertMyStringToBeginning", &Tests::testInsertMyStringToBeginning);
 	insertPointerToFunctionMap("testInsertMyStringToMiddle", &Tests::testInsertMyStringToMiddle);
 	insertPointerToFunctionMap("testInsertMyStringToEnd", &Tests::testInsertMyStringToEnd);
+	insertPointerToFunctionMap("testInsertCharToBeginning", &Tests::testInsertCharToBeginning);
 }
 
 bool Tests::testConstructor(){
@@ -26,7 +27,7 @@ bool Tests::testInsertStringLiteralToEnd(){
     MyString a = "Hello";
     a.insert(a.size(), " world!");
     MyString b = "Hello world!";
-	return TestDriver::assertEquals(a, b, "failed");
+	return TestDriver::assertEquals(a, b);
 }
 
 bool Tests::testInsertStringLiteralToBeginning(){
@@ -67,8 +68,12 @@ bool Tests::testInsertMyStringToEnd(){
 	return TestDriver::assertEquals(a, correct);
 }
 
-bool testInsertChar(){
-
+bool Tests::testInsertCharToBeginning(){
+    MyString a = "Hello";
+	char b = 'c';
+    a.insert(0, b);
+    MyString correct = "cHello";
+	return TestDriver::assertEquals(a, correct);
 }
 
 std::map<std::string, bool (Tests::*)()>  Tests::getTestFunctions(){
