@@ -9,6 +9,7 @@ class MyString{
 	
 	char* resize(size_t newSz);
 public:
+
 	MyString();
 
     MyString(const char *s);
@@ -48,5 +49,8 @@ public:
     char operator [](int index);
 	
 	~MyString();
+
+    friend class MyIterator;
+
 };
 #endif
