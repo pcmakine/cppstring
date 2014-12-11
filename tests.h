@@ -13,9 +13,15 @@ public:
 	Tests();
 	
 	bool testConstructor();
-	bool testInsertStringLiteralToEnd();
+
 	bool testInsertStringLiteralToBeginning();
 	bool testInsertStringLiteralToMiddle();
+	bool testInsertStringLiteralToEnd();
+	
+	bool testInsertMyStringToBeginning();
+	bool testInsertMyStringToMiddle();
+	bool testInsertMyStringToEnd();
+
 	
     bool testInsertChar();
     bool testInsertMyString();

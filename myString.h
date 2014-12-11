@@ -9,6 +9,8 @@ class MyString{
 	
 	char* resize(size_t newSz);
 public:
+	MyString();
+
     MyString(const char *s);
 
 	//copy constructor

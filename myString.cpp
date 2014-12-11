@@ -2,14 +2,19 @@
 #include <cstring>
 #include <iostream>
 
+MyString::MyString() : MyString(""){
+}
+
 MyString::MyString(const char* str){
+//	std::cout << "constructor called" << std::endl;
     sz = strlen(str);	
     arr = new char[sz+1];
-    std::memcpy(arr, str, sz*sizeof *arr);
-	arr[sz+1] = '\0';
+	std::memcpy(arr, str, sz*sizeof *arr);
+	arr[sz] = '\0';
 }
 
 MyString::MyString(MyString const& str){
+//	std::cout << "copy constructor called" << std::endl;
     sz = str.size();
     arr = new char[sz];
     std::memcpy(arr, str.elements(), sz*sizeof *arr);
@@ -17,6 +22,7 @@ MyString::MyString(MyString const& str){
 
 //copy assignment
 MyString&  MyString::operator = (MyString const& str){
+//	std::cout << "copy assignment called" << std::endl;
     sz = str.size();
     arr = new char[sz];
     std::memcpy(arr, str.elements(), sz*sizeof *arr);
@@ -24,6 +30,7 @@ MyString&  MyString::operator = (MyString const& str){
 
 //move constructor; must be compiled with -std=c++11
 MyString::MyString(MyString&& str)
+//	std::cout << "move constructor called" << std::endl;
    :sz{str.sz}, arr{str.arr}{
     str.sz = 0;
     str.arr = nullptr;

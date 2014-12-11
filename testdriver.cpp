@@ -54,12 +54,18 @@ bool TestDriver::assertEquals(MyString& str, MyString& otherStr){
 	return true;
 }
 
-void runSingle(Tests& tests, std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){
+bool runSingle(Tests& tests, std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){
 	std::string str = iter->first;
 
 	bool (Tests::*fpointer)() = iter->second;
-	(tests.*fpointer)();
-	
+	return(tests.*fpointer)();
+}
+
+void printResults(int passed, int failed){
+	std::cout << "-----------------------" << std::endl;
+	std::cout << "Totals:" << std::endl;
+	std::cout << "Passed: " << passed << " tests" << std::endl;
+	std::cout << "Failed: " << failed << " tests" << std::endl;
 }
 
 void TestDriver::run(){
@@ -73,10 +79,15 @@ void TestDriver::run(){
 	int testNum = 1;
 	std::cout << "Running tests...." << std::endl;
 	for(iter = testFuncts.begin(); iter != testFuncts.end(); ++iter){
-	std::cout << "Test "<< iter->first << " " << testNum << "/" << testFuncts.size() << " executing... Result: ";
-		runSingle(tests, iter, testFuncts);
-		testNum++;
+		std::cout << "Test "<< passed + failed << "/" << testFuncts.size() << " " << iter->first  << " executing... ";
+		if(runSingle(tests, iter, testFuncts)){
+			passed++;
+		}else{
+			failed++;
+		}
 	}
+	printResults(passed, failed);
+	
 }
 
 
