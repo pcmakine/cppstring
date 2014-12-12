@@ -104,7 +104,7 @@ bool Tests::testElements(){
 }
 
 bool Tests::testSwap(){
-	bool passed = true;
+	bool passed = false;
     MyString a = "Hello";
 	MyString b = "world!";
 	MyString c = "t";
@@ -132,6 +132,19 @@ bool Tests::testPush_back(){
 	return TestDriver::assertEquals(b, expected);
 }
 
+bool Tests::testPop_back(){
+	bool passed = false;
+	MyString a = "Hello!";
+	char popped = a.pop_back();
+	std::string expected = "Hello";
+	passed = TestDriver::assertEquals(a, expected);
+	char expectedChar = '!';
+	
+	passed = TestDriver::assertEquals(popped, expectedChar);
+	
+	return passed;
+}
+
 Tests::Tests(){
 	testToMap("testConstructor", &Tests::testConstructor);
 	testToMap("testConstructorWithEmptyString", &Tests::testConstructorWithEmptyString);
@@ -151,6 +164,7 @@ Tests::Tests(){
 	testToMap("testSize", &Tests::testSize);
 	testToMap("testSwap", &Tests::testSwap);
 	testToMap("testPush_back", &Tests::testPush_back);
+	testToMap("testPop_back", &Tests::testPop_back);
 }
 
 void Tests::testToMap(std::string fname, bool (Tests::*fpt)()){

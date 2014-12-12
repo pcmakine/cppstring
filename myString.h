@@ -30,13 +30,13 @@ public:
 	
 	void swap(MyString& str);
 	
-	void push_back(char& c);
-	
 	void insert(int index, const char* str);
 	
 	void insert(int index, MyString& str);
 
     void insert(int index, char c);
+	
+	void push_back(char& c);
 	
 	char pop_back();
 

@@ -52,6 +52,13 @@ bool TestDriver::assertEquals(int actual, int expected){
 	return failTest(actual, expected);
 }
 
+bool TestDriver::assertEquals(char actual, char expected){
+	if(actual == expected){
+		return passTest();
+	}
+	return failTest(actual, expected);
+}
+
 bool runSingle(Tests& tests, std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){
 	std::string str = iter->first;
 
@@ -77,7 +84,7 @@ void TestDriver::run(){
 	int testNum = 1;
 	std::cout << "Running tests...." << std::endl;
 	for(iter = testFuncts.begin(); iter != testFuncts.end(); ++iter){
-		std::cout << "Test "<< passed + failed +1 << "/" << testFuncts.size() << " " << iter->first  << " executing... ";
+		std::cout << "Test "<< passed + failed +1 << "/" << testFuncts.size() << " " << iter->first  << " executing... " << std::endl;
 		if(runSingle(tests, iter, testFuncts)){
 			passed++;
 		}else{

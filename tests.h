@@ -35,6 +35,8 @@ public:
 	bool testElements();
 	bool testSwap();
 	bool testPush_back();
+	bool testPop_back();
+
 
     std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	

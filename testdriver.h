@@ -19,6 +19,7 @@ public:
 	static bool assertEquals(MyString& str, std::string& otherStr);
 	static bool assertEquals(const char* actual, std::string& expected);
 	static bool assertEquals(int actual, int expected);
+	static bool assertEquals(char actual, char expected);
 	void run();
 };
 #endif
