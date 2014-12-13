@@ -23,7 +23,6 @@ MyString::MyString(MyString const& str):
 	if(debug){
 		std::cout << "copy constructor called" << std::endl;
 	}
-	
     std::memcpy(arr, str.elements(), (sz+1)*sizeof *arr);
 }
 
@@ -31,14 +30,10 @@ MyString::MyString(MyString const& str):
 MyString& MyString::operator = (MyString const& str){
 	if(debug){
 		std::cout << "copy assignment called" << std::endl;
-		std::cout << *this << std::endl;
-		//std::cout << *(this+6) << std::endl;
-		const char cc = this->elements()[5];
-		std::cout << cc << std::endl;
 	}
 	char* temp = new char[str.size()+1];
 	
-	std::memcpy(temp, str.elements(), (str.size()+1)*sizeof *temp);		//+1 to get the endline characted	
+	std::memcpy(temp, str.elements(), (str.size()+1)*sizeof *temp);		//+1 to get the end character	
 	delete[] arr;
 	arr = temp;
 	sz = str.size();
@@ -57,7 +52,7 @@ MyString::MyString(MyString&& str)
     str.arr = nullptr;
 }
 
-void MyString::print(){
+void MyString::print() const{
     std::cout << arr << this << std::endl;
 }
 
@@ -66,6 +61,7 @@ int MyString::size() const{
 }
 
 const char *MyString::elements() const{
+
     const char *p = arr;
     return p;
 }
@@ -161,7 +157,6 @@ std::istream& operator>>(std::istream &is, MyString& str ){
     int size = is.tellg();
     is.seekg (0, is.beg);
 
-	std::cout << size << std::endl;
 	str.resize(size);
 	is >> str.arr;                  
 	str.arr[size] = '\0';

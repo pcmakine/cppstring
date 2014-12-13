@@ -158,6 +158,21 @@ bool Tests::testOutputInput(){
 	return TestDriver::assertEquals(a, b);
 }
 
+bool Tests::testBracketOperator(){
+	bool passed = false;
+    MyString a = "Hello";
+	char actual = a[0];
+	
+	passed = TestDriver::assertEqualsPrimitive(actual, 'H');
+	actual = a[4];
+	passed = TestDriver::assertEqualsPrimitive(actual, 'o');
+	
+	actual = a[2];
+	passed = TestDriver::assertEqualsPrimitive(actual, 'l');
+	
+	return passed;
+}
+
 Tests::Tests(){
 
 	//constructors
@@ -185,7 +200,10 @@ Tests::Tests(){
 	
 	//operators
 	testToMap("testOutputInput", &Tests::testOutputInput);
+	testToMap("testBracketOperator", &Tests::testBracketOperator);
 }
+
+
 
 void Tests::testToMap(std::string fname, bool (Tests::*fpt)()){
 	testFunctions[fname] = fpt;

@@ -1,12 +1,16 @@
 #ifndef MYSTRING_H
 #define MYSTRING_H
 #include <iostream>
+
 class MyString{
+	friend class Tests; //forward declaration; needed for the compiler
+	friend class TestDriver; //forward declaration; needed for the compiler
     size_t sz;
     char *arr;
 	void strCopy(char* dest, const char* src, int fromIndex, int toIndex, int extractIndex);
 	
 	char* resize(size_t newSz);
+	const char* elements() const;
 public:
 	static bool debug;
 	MyString();
@@ -24,9 +28,7 @@ public:
 
     int size() const;
 
-    void print();
-
-    const char *elements() const;
+    void print() const;
 	
 	void swap(MyString& str);
 	
@@ -50,8 +52,6 @@ public:
     char operator [](int index);
 	
 	~MyString();
-
-    friend class MyIterator;
 
 };
 #endif
