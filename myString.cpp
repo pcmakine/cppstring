@@ -156,6 +156,18 @@ std::ostream& operator<<(std::ostream& os, const MyString& str){
     return os;
 }
 
+std::istream& operator>>(std::istream &is, MyString& str ){
+	is.seekg (0, is.end);
+    int size = is.tellg();
+    is.seekg (0, is.beg);
+
+	std::cout << size << std::endl;
+	str.resize(size);
+	is >> str.arr;                  
+	str.arr[size] = '\0';
+	return is;
+}
+
 char MyString::operator [](int index){
     char p = *(arr + index);
     return p;

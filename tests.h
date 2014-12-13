@@ -36,7 +36,9 @@ public:
 	bool testSwap();
 	bool testPush_back();
 	bool testPop_back();
-
+	
+	bool testOutputInput();
+	bool testBracketOperator();
 
     std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	

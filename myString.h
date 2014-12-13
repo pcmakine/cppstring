@@ -41,6 +41,8 @@ public:
 	char pop_back();
 
 	friend std::ostream& operator<<(std::ostream& os, const MyString& dt);
+	
+	friend std::istream& operator>>(std::istream &is, MyString& str );
 
     //copy assignment
     MyString& operator = (MyString const& str);

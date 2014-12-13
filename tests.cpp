@@ -1,6 +1,7 @@
 #include "tests.h"
 #include "myString.h"
 #include <iostream>
+#include <sstream>
 
 bool Tests::testConstructor(){
     MyString a = "Hello";
@@ -88,19 +89,21 @@ bool Tests::testInsertCharToBeginning(){
 	return TestDriver::assertEquals(a, correct);
 }
 
-bool Tests::testSize(){
-    MyString a = "Hello";
-	MyString b = " world!";
-    a.insert(2, b);
-	int actual = a.size();
-	return TestDriver::assertEquals(actual, 12);
-}
-
 bool Tests::testElements(){
     MyString a = "Hello";
 	const char* actual = a.elements();
 	std::string expected = "Hello";
 	return TestDriver::assertEquals(actual, expected);
+}
+
+bool Tests::testSize(){
+	bool passed = false;
+    MyString a = "Hello";
+	MyString b = " world!";
+    a.insert(2, b);
+	int actual = a.size();
+	passed = TestDriver::assertEqualsPrimitive(12, 12);
+	return passed;
 }
 
 bool Tests::testSwap(){
@@ -140,18 +143,31 @@ bool Tests::testPop_back(){
 	passed = TestDriver::assertEquals(a, expected);
 	char expectedChar = '!';
 	
-	passed = TestDriver::assertEquals(popped, expectedChar);
+	passed = TestDriver::assertEqualsPrimitive(popped, expectedChar);
 	
 	return passed;
 }
 
+bool Tests::testOutputInput(){
+    MyString a = "Hello";	
+	std::stringstream ss;
+	ss << a;
+	MyString b = "";
+	ss >> b;
+
+	return TestDriver::assertEquals(a, b);
+}
+
 Tests::Tests(){
+
+	//constructors
 	testToMap("testConstructor", &Tests::testConstructor);
 	testToMap("testConstructorWithEmptyString", &Tests::testConstructorWithEmptyString);
 	testToMap("testCopyConstructor", &Tests::testCopyConstructor);
 	testToMap("testCopyAssignment", &Tests::testCopyAssignment);
 	testToMap("testMoveConstructor", &Tests::testMoveConstructor);
 	
+	//inserts
 	testToMap("testInsertStringLiteralToMiddle", &Tests::testInsertStringLiteralToMiddle);
 	testToMap("testInsertStringLiteralToEnd", &Tests::testInsertStringLiteralToEnd);
 	testToMap("testInsertStringLiteralToBeginning", &Tests::testInsertStringLiteralToBeginning);
@@ -160,11 +176,15 @@ Tests::Tests(){
 	testToMap("testInsertMyStringToEnd", &Tests::testInsertMyStringToEnd);
 	testToMap("testInsertCharToBeginning", &Tests::testInsertCharToBeginning);
 	
+	//general functions
 	testToMap("testElements", &Tests::testElements);
 	testToMap("testSize", &Tests::testSize);
 	testToMap("testSwap", &Tests::testSwap);
 	testToMap("testPush_back", &Tests::testPush_back);
 	testToMap("testPop_back", &Tests::testPop_back);
+	
+	//operators
+	testToMap("testOutputInput", &Tests::testOutputInput);
 }
 
 void Tests::testToMap(std::string fname, bool (Tests::*fpt)()){
