@@ -173,6 +173,41 @@ bool Tests::testErase(){
 	return passed;
 }
 
+bool Tests::testIteratorGet(){
+	MyString a = "Hello";
+	MyString::iterator iter = a.begin();
+	char actual = *iter;
+	
+	return TestDriver::assertEqualsPrimitive(actual, 'H');
+}
+
+bool Tests::testIteratorAdvance(){
+	MyString a = "Hello";
+	MyString::iterator iter = a.begin();
+	iter++;
+	char actual = *iter;
+	
+	return TestDriver::assertEqualsPrimitive(actual, 'e');
+}
+
+bool Tests::testIterate(){
+	bool passed = true;
+	MyString a = "Hello";
+	char array[5] = {'H', 'e', 'l', 'l', 'o'};
+	int i = 0;
+	
+	for(MyString::iterator iter = a.begin(); iter != a.end(); ++iter){
+		char actual = *iter;
+		if(!TestDriver::assertEqualsPrimitive(actual, array[i])){
+			passed = false;
+			break;
+		}
+		i++;
+	}
+	
+	return passed;
+}
+
 bool Tests::testOutputInput(){
     MyString a = "Hello";	
 	std::stringstream ss;
@@ -199,10 +234,32 @@ bool Tests::testBracketOperatorGet(){
 }
 
 bool Tests::testBracketOperatorSet(){
-    std::string actual = "Hello";
+    MyString actual = "Hello";
 	actual[0] = 'Y';
-	std::string expected = "Yello";
-	return TestDriver::assertEqualsPrimitive(actual, expected);
+	MyString expected = "Yello";
+	return TestDriver::assertEquals(actual, expected);
+}
+
+bool Tests::testEqualityOperator(){
+	bool passed = false;
+    MyString first = "Hello";
+	MyString other = "Hello";
+	
+	passed = TestDriver::assertEqualsPrimitive(first, other);
+	
+	first = "";
+	other = "";
+	
+	passed = TestDriver::assertEqualsPrimitive(first, other);
+	
+	return passed;
+}
+
+bool Tests::testInEqualityOperator(){
+    MyString first = "Hella";
+	MyString other = "Hello";
+	
+	return TestDriver::assertNotEquals(first, other);
 }
 
 
@@ -232,10 +289,17 @@ Tests::Tests(){
 	testToMap("testPop_back", &Tests::testPop_back);
 	testToMap("testErase", &Tests::testErase);
 	
+	//iterator
+	testToMap("testIteratorGet", &Tests::testIteratorGet);
+	testToMap("testIteratorAdvance", &Tests::testIteratorAdvance);
+	testToMap("testIterate", &Tests::testIterate);
+	
 	//operators
 	testToMap("testOutputInput", &Tests::testOutputInput);
 	testToMap("testBracketOperatorGet", &Tests::testBracketOperatorGet);
 	testToMap("testBracketOperatorSet", &Tests::testBracketOperatorSet);
+	testToMap("testEqualityOperator", &Tests::testEqualityOperator);
+	testToMap("testInEqualityOperator", &Tests::testInEqualityOperator);
 }
 
 

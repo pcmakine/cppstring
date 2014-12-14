@@ -50,6 +50,10 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const MyString& dt);
 	
 	friend std::istream& operator>>(std::istream &is, MyString& str );
+	
+	bool operator==(const MyString& str);
+	
+	bool operator!=(const MyString& str);
 
     //copy assignment
     MyString& operator = (MyString const& str);
@@ -64,6 +68,20 @@ public:
 		
 		public:
 		Iterator(MyString& str, int index);
+		
+		char& operator*();
+		
+		Iterator& operator++();
+		
+		Iterator operator++(int);
+		
+		char* operator->();
+		
+		Iterator& operator=(const Iterator& other);
+		
+		bool operator==(const Iterator&other);
+		
+		bool operator!=(const Iterator&other);
 
 	};
 	
@@ -71,7 +89,7 @@ public:
 	
 	iterator begin();
 	
-//	iterator end();
+	iterator end();
 	
 	~MyString();
 	

@@ -16,7 +16,7 @@ bool TestDriver::passTest(){
 }
 
 bool TestDriver::assertEquals(MyString& actual, MyString& expected){
-	if(actual.compare(expected) == true){
+	if(actual == expected){
 		return passTest();
 	}
 	return failTest(actual, expected);
@@ -36,14 +36,27 @@ bool TestDriver::assertEquals(MyString& actual, std::string& expected){
 	return failTest(actual, expected);
 }
 
-void printResults(int passed, int failed){
+void printResults(int passed, int failed, std::vector<int>& failedTests){
 	std::cout << "-----------------------" << std::endl;
 	std::cout << "Totals:" << std::endl;
 	std::cout << "Passed: " << passed << " tests" << std::endl;
 	std::cout << "Failed: " << failed << " tests" << std::endl;
+	
+	if(failedTests.size() > 0){
+		std::cout << "Failed tests were: " << std::endl;
+	}
+	
+	for(std::vector<int>::size_type i= 0; i != failedTests.size(); i++){
+		if(i != failedTests.size()-1){
+			std::cout << failedTests[i] << ", ";
+		}else{
+			std::cout << failedTests[i] << std::endl;
+		}
+		
+	}
 }
 
-void TestDriver::run(){
+void TestDriver::run(){                         
 	passed = 0;
 	failed = 0;
 
@@ -57,6 +70,7 @@ void TestDriver::run(){
 			if(runSingle(iter, testFuncts)){
 				passed++;
 			}else{
+				failedTests.push_back(passed + failed + 1);
 				failed++;
 			}
 		}catch(const std::exception &exc){
@@ -65,7 +79,7 @@ void TestDriver::run(){
 			failed++;
 		}
 	}
-	printResults(passed, failed);
+	printResults(passed, failed, failedTests);
 }
 
 bool TestDriver::runSingle(std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){

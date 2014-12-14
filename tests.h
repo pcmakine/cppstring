@@ -36,12 +36,17 @@ public:
 	bool testSwap();
 	bool testPush_back();
 	bool testPop_back();
+	bool testErase();
+	
+	bool testIteratorGet();
+	bool testIteratorAdvance();
+	bool testIterate();
 	
 	bool testOutputInput();
 	bool testBracketOperatorGet();
 	bool testBracketOperatorSet();
-	
-	bool testErase();
+	bool testEqualityOperator();
+	bool testInEqualityOperator();
 
     std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	

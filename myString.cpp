@@ -199,20 +199,43 @@ MyString::iterator MyString::begin(){
 	return Iterator(*this, 0);
 }
 
+MyString::iterator MyString::end(){
+	return Iterator(*this, sz);
+}
+
 MyString::Iterator::Iterator(MyString& str, int index):
 myStr(str), myIndex(index){
 }
 
-bool MyString::compare(const MyString& str){
-	if(sz != str.size()){
-		return false;
-	}
-	for(int i= 0; i < sz; i++){
-		if(arr[i] != str[i]){
-			return false;
-		}
-	}
-	return true;
+char& MyString::iterator::operator*(){
+	return myStr[myIndex];
+}
+
+MyString::iterator& MyString::iterator::operator++(){
+	myIndex++;
+	return (*this);
+}
+
+MyString::iterator MyString::iterator::operator++(int){
+	Iterator clone(*this);
+	myIndex++;
+	return clone;
+}
+
+MyString::iterator& MyString::iterator::operator=(const Iterator& other){ 
+	myStr[myIndex] = other.myStr[myIndex];
+}
+
+bool MyString::iterator::operator==(const Iterator&other){
+	return &myStr == &other.myStr && myIndex == other.myIndex;
+}
+
+bool MyString::iterator::operator!=(const Iterator&other){
+	return !(*this == other);
+}
+
+char* MyString::iterator::operator->(){
+	return (&*(*this));
 }
 
 //move assignment
@@ -252,13 +275,28 @@ std::istream& operator>>(std::istream &is, MyString& str ){
 
 char MyString::operator [](int index) const{
 	throwForInvalidIndex(index, sz);
-    char p = *(arr + index);
-    return p;
+    return *(arr+index);
 }
 
 char& MyString::operator [](int index){
 	throwForInvalidIndex(index, sz);
     return arr[index];
+}
+
+bool MyString::operator==(const MyString& str){
+	if(sz != str.size()){
+		return false;
+	}
+	for(int i= 0; i < sz; i++){
+		if(arr[i] != str[i]){
+			return false;
+		}
+	}
+	return true;
+}
+
+bool MyString::operator!=(const MyString& str){
+	return !(*this == str);
 }
 
 MyString::~MyString(){
