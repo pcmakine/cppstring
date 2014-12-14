@@ -39,6 +39,7 @@ public:
 	
 	bool testOutputInput();
 	bool testBracketOperator();
+	bool testErase();
 
     std::map<std::string, bool (Tests::*)()> getTestFunctions();
 	

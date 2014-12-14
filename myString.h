@@ -41,6 +41,8 @@ public:
 	void push_back(char c);
 	
 	char pop_back();
+	
+	void erase(int start, int end);
 
 	friend std::ostream& operator<<(std::ostream& os, const MyString& dt);
 	

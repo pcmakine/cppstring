@@ -148,6 +148,31 @@ bool Tests::testPop_back(){
 	return passed;
 }
 
+bool Tests::testErase(){
+	bool passed = false;
+    MyString actual = "Hello";
+	actual.erase(1, 3);
+	std::string expected = "Ho";
+	passed = TestDriver::assertEquals(actual, expected);
+	
+	actual.erase(0, 0);
+	expected = "o";
+	passed = TestDriver::assertEquals(actual, expected);
+	
+	actual.erase(0,0);
+	expected = "";
+	passed = TestDriver::assertEquals(actual, expected);
+	
+	actual = "Hello";
+
+	actual.erase(1, actual.size()-1);
+
+	expected = "H";
+	passed = TestDriver::assertEquals(actual, expected);
+	
+	return passed;
+}
+
 bool Tests::testOutputInput(){
     MyString a = "Hello";	
 	std::stringstream ss;
@@ -197,6 +222,7 @@ Tests::Tests(){
 	testToMap("testSwap", &Tests::testSwap);
 	testToMap("testPush_back", &Tests::testPush_back);
 	testToMap("testPop_back", &Tests::testPop_back);
+	testToMap("testErase", &Tests::testErase);
 	
 	//operators
 	testToMap("testOutputInput", &Tests::testOutputInput);

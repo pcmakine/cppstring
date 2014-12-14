@@ -80,15 +80,21 @@ bool TestDriver::runSingle(std::map<std::string, bool (Tests::*)()>::iterator it
 }
 
 bool TestDriver::runSingleByName(std::string functionName){
+	bool success = false;
 	std::map<std::string, bool (Tests::*)()>::iterator iter;
 	
 	iter = testFuncts.find(functionName);
-	
+	bool (Tests::*fpointer)() = iter->second;
 	if(iter != testFuncts.end()){
 		std::string str = iter->first;
 		
-		bool (Tests::*fpointer)() = iter->second;
-		return(tests->*fpointer)();
+		try{
+			success = (tests->*fpointer)();
+		}catch(const std::exception &exc){
+			std::cerr << "Test caused an unexpected error: "<< exc.what() << std::endl;
+			std::cout << "Test failed" << std::endl;
+		}
+		success;
 	}
 	return false;
 }

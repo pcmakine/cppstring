@@ -29,7 +29,7 @@ int main(int argc, char* argv[]){
 	}
 	else if(testArg.compare(argv[1]) == 0){
 		TestDriver t;
-		//t.runSingle("testSize");
+		//t.runSingleByName("testErase");
 		t.run();
 	}else if(debugArg.compare(argv[1]) == 0){
 		MyString::debug = true;

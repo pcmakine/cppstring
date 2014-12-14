@@ -8,19 +8,16 @@ bool MyString::debug = false;
 MyString::MyString() : MyString(""){
 }
 
-MyString::MyString(const char* str){
+MyString::MyString(const char* str):
+	sz(strlen(str)), arr(new char[sz+1]){
 	if(debug){
 		std::cout << "constructor called" << std::endl;
 	}
 	try{
-	   sz = strlen(str);	
-	   arr = new char[sz+1];
 	   std::strncpy(arr, str, sz*sizeof *arr);
-	}catch(std::bad_alloc const& e){
+	}catch(...){
 		delete[] arr;
 		sz = 0;
-		throw e;
-	}catch(...){
 		throw std::runtime_error("could not create MyString");
 	}
 	arr[sz] = '\0';
@@ -39,9 +36,9 @@ MyString& MyString::operator = (MyString const& str){
 	if(debug){
 		std::cout << "copy assignment called" << std::endl;
 	}
-	char* temp = new char[str.size()+1];
+	char* temp = new char[str.size()+1];		//let caller handle possible bad alloc
 	
-	std::memcpy(temp, str.elements(), (str.size()+1)*sizeof *temp);		//+1 to get the end character	
+	std::strncpy(temp, str.elements(), (str.size()+1)*sizeof *temp);		//+1 to get the end character	
 	delete[] arr;
 	arr = temp;
 	sz = str.size();
@@ -91,17 +88,17 @@ void MyString::push_back(char c){
 }
 
 void throwForInvalidIndex(int index, int size){
-	if(index < 0 || index > size){
+	if(index < 0 || index >= size){
 		throw std::out_of_range("index out of range!");
 	}
 }
 
 void MyString::insert(int index, const char* const str){
-	throwForInvalidIndex(index, sz);
+	throwForInvalidIndex(index, sz+1);	//+1 because we can insert also after the string
 	size_t strSz = strlen(str);
 	size_t newSz = sz + strSz;
 	
-	const char* temp = resize(newSz);
+	const char* temp = resize(newSz);	//may throw, but the string's state is fine, let the caller handle the exception
 	strCopy(arr, temp, 0, index, 0);
 	strCopy(arr, str, index, (index + strSz), 0);
 	strCopy(arr, temp, (index + strSz), newSz, index);
@@ -113,17 +110,10 @@ void MyString::insert(int index, const MyString& str){
 }
 
 void MyString::insert(int index, char c){
-	char p[2];
-	p[0] = c;
-	p[1] = '\0';
-    insert(index, p);
-}
-
-void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, int srcExtractIndex){
-	for(int i = fromIndex; i < toIndex; i++){
-		dest[i] = src[srcExtractIndex];
-		srcExtractIndex++;
-	}
+	char charAsArray[2];
+	charAsArray[0] = c;
+	charAsArray[1] = '\0';
+    insert(index, charAsArray);
 }
 
 char* MyString::resize(size_t newSz){
@@ -166,6 +156,42 @@ char MyString::pop_back(){	//pop_back as demonstrated in the instructions
 		arr[sz] = '\0';
 	}
 	return c;
+}
+
+void MyString::erase(int start, int end){
+	if(start < 0 || end >= sz || start > end){
+		throw std::out_of_range("Bad index!");
+	}
+	
+	char backup[sz+1];
+	
+	strncpy(backup, arr, sz*sizeof *arr);
+	backup[sz] = '\0';
+	
+	size_t newSz = sz - (end - start +1);	//+1 because the function is inclusive for both start and end
+	char temp[newSz];
+	strCopy(temp, arr, 0, start, 0);
+	strCopy(temp, arr, start, sz, end+1);
+	
+	delete[] arr;
+	
+	try{
+		arr = new char[newSz+1];
+		std::strncpy(arr, temp, sz*sizeof *temp);
+	}catch(std::bad_alloc const& e){
+		arr = new char[sz];			//if the allocation did not work, reverse the array as it was
+		std::strncpy(arr, backup, sz*sizeof *backup);
+		arr[sz] = '\0';
+		throw e;
+	}
+	sz = newSz;
+}
+
+void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, int srcExtractIndex){
+	for(int i = fromIndex; i < toIndex; i++){
+		dest[i] = src[srcExtractIndex];
+		srcExtractIndex++;
+	}
 }
 
 //move assignment
