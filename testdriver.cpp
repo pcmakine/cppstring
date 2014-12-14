@@ -47,7 +47,6 @@ void TestDriver::run(){
 
 	std::map<std::string, bool (Tests::*)()>::iterator iter;
 
-	int testNum = 1;
 	std::cout << "Running tests...." << std::endl;
 	for(iter = testFuncts.begin(); iter != testFuncts.end(); ++iter){
 		std::cout << "Test "<< passed + failed +1 << "/" << testFuncts.size() << " " << iter->first  << " executing... " << std::endl;
@@ -87,8 +86,9 @@ bool TestDriver::runSingleByName(std::string functionName){
 		}catch(const std::exception &exc){
 			std::cerr << "Test caused an unexpected error: "<< exc.what() << std::endl;
 			std::cout << "Test failed" << std::endl;
+			success = false;
 		}
-		success;
+		return success;
 	}
 	return false;
 }

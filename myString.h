@@ -16,7 +16,7 @@ public:
     //move constructor
     MyString(MyString&& str);
 
-    int size() const;
+    size_t size() const;
 
     void print() const;
 	
@@ -32,7 +32,7 @@ public:
 	
 	char pop_back();
 	
-	void erase(int start, int end);
+	void erase(unsigned int start, unsigned int end);
 	
 	bool compare(const MyString& str);
 

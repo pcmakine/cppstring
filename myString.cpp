@@ -61,7 +61,7 @@ void MyString::print() const{
     std::cout << arr << this << std::endl;
 }
 
-int MyString::size() const{
+size_t MyString::size() const{
     return sz;
 }
 
@@ -116,8 +116,13 @@ void MyString::insert(int index, char c){
     insert(index, charAsArray);
 }
 
+//copies the contents of the array to another array and resizes the original one. If resize does not work resets the array as it was before
 char* MyString::resize(size_t newSz){
 	char temp[newSz];
+	char backup[sz+1];
+	
+	std::strncpy(backup, arr, (sz+1)*sizeof *arr);
+	
 	try{
 		if(sz <= newSz){
 			std::strncpy(temp, arr, sz*sizeof *arr);
@@ -125,6 +130,7 @@ char* MyString::resize(size_t newSz){
 			std::strncpy(temp, arr, newSz*sizeof *arr);
 		}
 	}catch(...){
+		std::strncpy(arr, backup, (sz+1)*sizeof *arr);
 		throw std::runtime_error("Could not resize MyString");
 	}
 	delete[] arr;
@@ -133,7 +139,7 @@ char* MyString::resize(size_t newSz){
 		arr = new char[newSz+1];	
 	}catch(std::bad_alloc const& e){
 		arr = new char[sz];			//if the allocation did not work, reverse the array as it was
-		std::strncpy(arr, temp, sz*sizeof *temp);
+		std::strncpy(arr, backup, (sz+1)*sizeof *arr);
 		throw e;
 	}
 
@@ -158,15 +164,14 @@ char MyString::pop_back(){	//pop_back as demonstrated in the instructions
 	return c;
 }
 
-void MyString::erase(int start, int end){
+void MyString::erase(unsigned int start, unsigned int end){
 	if(start < 0 || end >= sz || start > end){
 		throw std::out_of_range("Bad index!");
 	}
 	
 	char backup[sz+1];
 	
-	strncpy(backup, arr, sz*sizeof *arr);
-	backup[sz] = '\0';
+	strncpy(backup, arr, (sz+1)*sizeof *arr);
 	
 	size_t newSz = sz - (end - start +1);	//+1 because the function is inclusive for both start and end
 	char temp[newSz];
@@ -243,7 +248,7 @@ bool MyString::operator==(const MyString& str){
 	if(sz != str.size()){
 		return false;
 	}
-	for(int i= 0; i < sz; i++){
+	for(unsigned int i= 0; i < sz; i++){
 		if(arr[i] != str[i]){
 			return false;
 		}

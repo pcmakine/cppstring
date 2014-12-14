@@ -94,7 +94,7 @@ bool Tests::testElements(){
 	MyString test = "Hello";
     char a[5] = {'H', 'e', 'l', 'l', 'o'};
 	const char* actual = test.elements();
-	for(int i = 0; i < test.size(); i++){
+	for(unsigned int i = 0; i < test.size(); i++){
 		if(!TestDriver::assertEquals(a[i], actual[i])){
 			passed = false;
 			break;
@@ -109,7 +109,7 @@ bool Tests::testSize(){
 	MyString b = " world!";
     a.insert(2, b);
 	int actual = a.size();
-	passed = TestDriver::assertEquals(12, 12);
+	passed = TestDriver::assertEquals(actual, 12);
 	return passed;
 }
 

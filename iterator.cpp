@@ -30,6 +30,7 @@ MyString::iterator MyString::iterator::operator++(int){
 
 MyString::iterator& MyString::iterator::operator=(const Iterator& other){ 
 	myStr[myIndex] = other.myStr[myIndex];
+	return (*this);
 }
 
 bool MyString::iterator::operator==(const Iterator&other){
