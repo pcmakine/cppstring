@@ -3,8 +3,8 @@
 #include <iostream>
 
 class MyString{
-	friend class Tests; //forward declaration; needed for the compiler
-	friend class TestDriver; //forward declaration; needed for the compiler
+	friend class Tests;
+	friend class TestDriver;
     size_t sz;
     char *arr;
 	void strCopy(char* dest, const char* src, int fromIndex, int toIndex, int extractIndex);
@@ -32,13 +32,13 @@ public:
 	
 	void swap(MyString& str);
 	
-	void insert(int index, const char* str);
+	void insert(int index, const char* const str);
 	
-	void insert(int index, MyString& str);
+	void insert(int index, const MyString& str);
 
     void insert(int index, char c);
 	
-	void push_back(char& c);
+	void push_back(char c);
 	
 	char pop_back();
 

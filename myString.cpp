@@ -61,7 +61,6 @@ int MyString::size() const{
 }
 
 const char *MyString::elements() const{
-
     const char *p = arr;
     return p;
 }
@@ -72,7 +71,7 @@ void MyString::swap(MyString& str){
 	*this = temp;
 }
 
-void MyString::push_back(char& c){
+void MyString::push_back(char c){
 	char* temp = resize(sz + 1);
 	std::memcpy(arr, temp,  sz*sizeof *arr);
 	arr[sz - 1] = c;
@@ -80,7 +79,7 @@ void MyString::push_back(char& c){
 }
 
 //what to do if index is bigger than the size of the original string?
-void MyString::insert(int index, const char* str){
+void MyString::insert(int index, const char* const str){
 	size_t strSz = strlen(str);
 	size_t newSz = sz + strSz;
 	
@@ -91,11 +90,11 @@ void MyString::insert(int index, const char* str){
 	arr[newSz] = '\0';
 }
 
-void MyString::insert(int index, MyString& str){
+void MyString::insert(int index, const MyString& str){
 	insert(index, str.elements());
 }
 
-void MyString::insert(int index, const char c){
+void MyString::insert(int index, char c){
 	char p[2];
 	p[0] = c;
 	p[1] = '\0';
