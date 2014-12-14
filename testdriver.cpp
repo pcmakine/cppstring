@@ -3,6 +3,7 @@
 #include "tests.h"
 #include <iostream>
 #include <string>
+#include <stdexcept>
 
 TestDriver::TestDriver(){
 	tests = new Tests();
@@ -58,16 +59,27 @@ void TestDriver::run(){
 	std::cout << "Running tests...." << std::endl;
 	for(iter = testFuncts.begin(); iter != testFuncts.end(); ++iter){
 		std::cout << "Test "<< passed + failed +1 << "/" << testFuncts.size() << " " << iter->first  << " executing... " << std::endl;
-		if(runSingle(iter, testFuncts)){
-			passed++;
-		}else{
+		try{
+			if(runSingle(iter, testFuncts)){
+				passed++;
+			}else{
+				failed++;
+			}
+		}catch(const std::exception &exc){
+			std::cerr << "Test caused an unexpected error: "<< exc.what() << std::endl;
+			std::cout << "Test failed" << std::endl;
 			failed++;
 		}
 	}
 	printResults(passed, failed);
 }
 
-bool TestDriver::runSingle(std::string functionName){
+bool TestDriver::runSingle(std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){
+	bool (Tests::*fpointer)() = iter->second;
+	return(tests->*fpointer)();
+}
+
+bool TestDriver::runSingleByName(std::string functionName){
 	std::map<std::string, bool (Tests::*)()>::iterator iter;
 	
 	iter = testFuncts.find(functionName);
@@ -79,13 +91,6 @@ bool TestDriver::runSingle(std::string functionName){
 		return(tests->*fpointer)();
 	}
 	return false;
-}
-
-bool TestDriver::runSingle(std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){
-	std::string str = iter->first;
-
-	bool (Tests::*fpointer)() = iter->second;
-	return(tests->*fpointer)();
 }
 
 TestDriver::~TestDriver(){

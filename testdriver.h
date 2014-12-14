@@ -34,7 +34,7 @@ public:
 	}
 
 	void run();
-	bool runSingle(std::string functionName);
+	bool runSingleByName(std::string functionName);
 	bool runSingle(std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts);
 	~TestDriver();
 };

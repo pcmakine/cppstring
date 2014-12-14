@@ -1,6 +1,7 @@
 #include "myString.h"
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 
 bool MyString::debug = false;
 
@@ -11,10 +12,17 @@ MyString::MyString(const char* str){
 	if(debug){
 		std::cout << "constructor called" << std::endl;
 	}
-
-    sz = strlen(str);	
-    arr = new char[sz+1];
-	std::memcpy(arr, str, sz*sizeof *arr);
+	try{
+	   sz = strlen(str);	
+	   arr = new char[sz+1];
+	   std::strncpy(arr, str, sz*sizeof *arr);
+	}catch(std::bad_alloc const& e){
+		delete[] arr;
+		sz = 0;
+		throw e;
+	}catch(...){
+		throw std::runtime_error("could not create MyString");
+	}
 	arr[sz] = '\0';
 }
 
@@ -23,7 +31,7 @@ MyString::MyString(MyString const& str):
 	if(debug){
 		std::cout << "copy constructor called" << std::endl;
 	}
-    std::memcpy(arr, str.elements(), (sz+1)*sizeof *arr);
+    std::strncpy(arr, str.elements(), (sz+1)*sizeof *arr);
 }
 
 //copy assignment
@@ -72,14 +80,24 @@ void MyString::swap(MyString& str){
 }
 
 void MyString::push_back(char c){
-	char* temp = resize(sz + 1);
-	std::memcpy(arr, temp,  sz*sizeof *arr);
+	try{
+		char* temp = resize(sz + 1);
+		std::strncpy(arr, temp,  sz*sizeof *arr);
+	}catch(...){
+		throw std::runtime_error("MyString resize failed!");
+	}
 	arr[sz - 1] = c;
 	arr[sz] = '\0';
 }
 
-//what to do if index is bigger than the size of the original string?
+void throwForInvalidIndex(int index, int size){
+	if(index < 0 || index > size){
+		throw std::out_of_range("index out of range!");
+	}
+}
+
 void MyString::insert(int index, const char* const str){
+	throwForInvalidIndex(index, sz);
 	size_t strSz = strlen(str);
 	size_t newSz = sz + strSz;
 	
@@ -110,15 +128,26 @@ void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, 
 
 char* MyString::resize(size_t newSz){
 	char temp[newSz];
-	if(sz <= newSz){
-		std::memcpy(temp, arr, sz*sizeof *arr);
-	}else{
-		std::memcpy(temp, arr, newSz*sizeof *arr);
+	try{
+		if(sz <= newSz){
+			std::strncpy(temp, arr, sz*sizeof *arr);
+		}else{
+			std::strncpy(temp, arr, newSz*sizeof *arr);
+		}
+	}catch(...){
+		throw std::runtime_error("Could not resize MyString");
+	}
+	delete[] arr;
+	
+	try{
+		arr = new char[newSz+1];	
+	}catch(std::bad_alloc const& e){
+		arr = new char[sz];			//if the allocation did not work, reverse the array as it was
+		std::strncpy(arr, temp, sz*sizeof *temp);
+		throw e;
 	}
 
-	delete[] arr;
 	sz = newSz;
-	arr = new char[sz + 1];
 	char* p = temp;
 	return p;
 }
@@ -128,8 +157,12 @@ char MyString::pop_back(){	//pop_back as demonstrated in the instructions
 	char c = '\0';
 	if(sz > 0){
 		c = arr[sz - 1];
-		char* temp = resize(sz-1);
-		std::memcpy(arr, temp,  sz*sizeof *arr);
+		try{
+			char* temp = resize(sz-1);
+			std::strncpy(arr, temp,  sz*sizeof *arr);
+		}catch(...){
+			throw std::runtime_error("MyString resize failed!");
+		}
 		arr[sz] = '\0';
 	}
 	return c;
@@ -155,14 +188,20 @@ std::istream& operator>>(std::istream &is, MyString& str ){
 	is.seekg (0, is.end);
     int size = is.tellg();
     is.seekg (0, is.beg);
+	
+	try{
+		str.resize(size);
+		is >> str.arr;     
+		str.arr[size] = '\0';		
+	}catch(...){
+		throw std::runtime_error("Could not read the stream to MyString!");
+	}
 
-	str.resize(size);
-	is >> str.arr;                  
-	str.arr[size] = '\0';
 	return is;
 }
 
 char MyString::operator [](int index){
+	throwForInvalidIndex(index, sz);
     char p = *(arr + index);
     return p;
 }
