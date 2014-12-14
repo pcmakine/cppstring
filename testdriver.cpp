@@ -16,16 +16,10 @@ bool TestDriver::passTest(){
 }
 
 bool TestDriver::assertEquals(MyString& actual, MyString& expected){
-	int size = actual.size();
-	if(size != expected.size()){
-		return failTest(actual, expected);
+	if(actual.compare(expected) == true){
+		return passTest();
 	}
-	for(int i= 0; i < size; i++){
-		if(actual[i] != expected[i]){
-			return failTest(actual, expected);
-		}
-	}
-	return passTest();
+	return failTest(actual, expected);
 }
 
 bool TestDriver::assertEquals(const char* actual, std::string& expected){

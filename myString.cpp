@@ -194,8 +194,32 @@ void MyString::strCopy(char* dest, const char* src, int fromIndex, int toIndex, 
 	}
 }
 
+//iterator functions
+MyString::iterator MyString::begin(){
+	return Iterator(*this, 0);
+}
+
+MyString::Iterator::Iterator(MyString& str, int index):
+myStr(str), myIndex(index){
+}
+
+bool MyString::compare(const MyString& str){
+	if(sz != str.size()){
+		return false;
+	}
+	for(int i= 0; i < sz; i++){
+		if(arr[i] != str[i]){
+			return false;
+		}
+	}
+	return true;
+}
+
 //move assignment
 MyString& MyString::operator = (MyString&& str){
+	if(this == &str){	//same address (same object)
+		return *this;	//just return *this
+	}
    delete[] arr;
    arr = str.arr;
    sz = str.sz;
@@ -226,10 +250,15 @@ std::istream& operator>>(std::istream &is, MyString& str ){
 	return is;
 }
 
-char MyString::operator [](int index){
+char MyString::operator [](int index) const{
 	throwForInvalidIndex(index, sz);
     char p = *(arr + index);
     return p;
+}
+
+char& MyString::operator [](int index){
+	throwForInvalidIndex(index, sz);
+    return arr[index];
 }
 
 MyString::~MyString(){
@@ -238,6 +267,5 @@ MyString::~MyString(){
 	}
     delete[] arr;
 }
-
 
 

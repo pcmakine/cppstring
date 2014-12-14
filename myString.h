@@ -2,6 +2,7 @@
 #define MYSTRING_H
 #include <iostream>
 
+
 class MyString{
 	friend class Tests;
 	friend class TestDriver;
@@ -43,6 +44,8 @@ public:
 	char pop_back();
 	
 	void erase(int start, int end);
+	
+	bool compare(const MyString& str);
 
 	friend std::ostream& operator<<(std::ostream& os, const MyString& dt);
 	
@@ -51,9 +54,28 @@ public:
     //copy assignment
     MyString& operator = (MyString const& str);
 
-    char operator [](int index);
+    char operator [](int index) const;
+	
+	char& operator [](int index);
+	
+	class Iterator{
+		MyString& myStr;
+		int myIndex;
+		
+		public:
+		Iterator(MyString& str, int index);
+
+	};
+	
+	typedef MyString::Iterator iterator;
+	
+	iterator begin();
+	
+//	iterator end();
 	
 	~MyString();
+	
+
 
 };
 #endif
