@@ -2,16 +2,8 @@
 #define MYSTRING_H
 #include <iostream>
 
-
 class MyString{
-	friend class Tests;
-	friend class TestDriver;
-    size_t sz;
-    char *arr;
-	void strCopy(char* dest, const char* src, int fromIndex, int toIndex, int extractIndex);
-	
-	char* resize(size_t newSz);
-	const char* elements() const;
+
 public:
 	static bool debug;
 	MyString();
@@ -23,9 +15,6 @@ public:
 
     //move constructor
     MyString(MyString&& str);
-
-    //move assignment
-    MyString& operator = (MyString&& str);
 
     int size() const;
 
@@ -47,6 +36,9 @@ public:
 	
 	bool compare(const MyString& str);
 
+	//move assignment
+    MyString& operator = (MyString&& str);
+	
 	friend std::ostream& operator<<(std::ostream& os, const MyString& dt);
 	
 	friend std::istream& operator>>(std::istream &is, MyString& str );
@@ -62,11 +54,11 @@ public:
 	
 	char& operator [](int index);
 	
-	class Iterator{
-		MyString& myStr;
-		int myIndex;
+	~MyString();
 		
-		public:
+	class Iterator{
+		
+	public:
 		Iterator(MyString& str, int index);
 		
 		char& operator*();
@@ -82,6 +74,10 @@ public:
 		bool operator==(const Iterator&other);
 		
 		bool operator!=(const Iterator&other);
+		
+	private:
+		MyString& myStr;
+		int myIndex;
 
 	};
 	
@@ -91,9 +87,14 @@ public:
 	
 	iterator end();
 	
-	~MyString();
+private:
+	friend class Tests;
+	friend class TestDriver;
+    size_t sz;
+    char *arr;
+	void strCopy(char* dest, const char* src, int fromIndex, int toIndex, int extractIndex);
 	
-
-
+	char* resize(size_t newSz);
+	const char* elements() const;
 };
 #endif

@@ -15,21 +15,7 @@ bool TestDriver::passTest(){
 	return true;
 }
 
-bool TestDriver::assertEquals(MyString& actual, MyString& expected){
-	if(actual == expected){
-		return passTest();
-	}
-	return failTest(actual, expected);
-}
-
-bool TestDriver::assertEquals(const char* actual, std::string& expected){
-	if(expected.compare(actual) == 0){
-		return passTest();
-	}
-	return failTest(actual, expected);
-}
-
-bool TestDriver::assertEquals(MyString& actual, std::string& expected){
+bool TestDriver::assertEqualsStdString(MyString& actual, std::string& expected){
 	if(expected.compare(actual.elements()) == 0){
 		return passTest();
 	}
@@ -52,7 +38,6 @@ void printResults(int passed, int failed, std::vector<int>& failedTests){
 		}else{
 			std::cout << failedTests[i] << std::endl;
 		}
-		
 	}
 }
 
@@ -81,6 +66,7 @@ void TestDriver::run(){
 	}
 	printResults(passed, failed, failedTests);
 }
+
 
 bool TestDriver::runSingle(std::map<std::string, bool (Tests::*)()>::iterator iter, std::map<std::string, bool (Tests::*)()> testFuncts){
 	bool (Tests::*fpointer)() = iter->second;

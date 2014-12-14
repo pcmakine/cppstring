@@ -6,13 +6,13 @@
 bool Tests::testConstructor(){
     MyString a = "Hello";
 	std::string correct = "Hello";
-	return TestDriver::assertEquals(a, correct);
+	return TestDriver::assertEqualsStdString(a, correct);
 }
 
 bool Tests::testConstructorWithEmptyString(){
     MyString a = "";
 	std::string correct = "";
-	return TestDriver::assertEquals(a, correct);
+	return TestDriver::assertEqualsStdString(a, correct);
 }
 
 bool Tests::testCopyConstructor(){
@@ -90,10 +90,17 @@ bool Tests::testInsertCharToBeginning(){
 }
 
 bool Tests::testElements(){
-    MyString a = "Hello";
-	const char* actual = a.elements();
-	std::string expected = "Hello";
-	return TestDriver::assertEquals(actual, expected);
+	bool passed = true;
+	MyString test = "Hello";
+    char a[5] = {'H', 'e', 'l', 'l', 'o'};
+	const char* actual = test.elements();
+	for(int i = 0; i < test.size(); i++){
+		if(!TestDriver::assertEquals(a[i], actual[i])){
+			passed = false;
+			break;
+		}
+	}
+	return passed;
 }
 
 bool Tests::testSize(){
@@ -102,7 +109,7 @@ bool Tests::testSize(){
 	MyString b = " world!";
     a.insert(2, b);
 	int actual = a.size();
-	passed = TestDriver::assertEqualsPrimitive(12, 12);
+	passed = TestDriver::assertEquals(12, 12);
 	return passed;
 }
 
@@ -114,14 +121,14 @@ bool Tests::testSwap(){
 	a.swap(b);
 
 	std::string expected = "world!";
-	passed = TestDriver::assertEquals(a, expected);
+	passed = TestDriver::assertEqualsStdString(a, expected);
 	
 	expected = "Hello";
-	passed = TestDriver::assertEquals(b, expected);
+	passed = TestDriver::assertEqualsStdString(b, expected);
 	
 	c.swap(a);
 	expected = "world!";
-	passed = TestDriver::assertEquals(c, expected);
+	passed = TestDriver::assertEqualsStdString(c, expected);
 	
 	return passed;
 }
@@ -132,7 +139,7 @@ bool Tests::testPush_back(){
 	b.push_back(a);
 	std::string expected = "world!a";
 
-	return TestDriver::assertEquals(b, expected);
+	return TestDriver::assertEqualsStdString(b, expected);
 }
 
 bool Tests::testPop_back(){
@@ -140,10 +147,10 @@ bool Tests::testPop_back(){
 	MyString a = "Hello!";
 	char popped = a.pop_back();
 	std::string expected = "Hello";
-	passed = TestDriver::assertEquals(a, expected);
+	passed = TestDriver::assertEqualsStdString(a, expected);
 	char expectedChar = '!';
 	
-	passed = TestDriver::assertEqualsPrimitive(popped, expectedChar);
+	passed = TestDriver::assertEquals(popped, expectedChar);
 	
 	return passed;
 }
@@ -153,22 +160,22 @@ bool Tests::testErase(){
     MyString actual = "Hello";
 	actual.erase(1, 3);
 	std::string expected = "Ho";
-	passed = TestDriver::assertEquals(actual, expected);
+	passed = TestDriver::assertEqualsStdString(actual, expected);
 	
 	actual.erase(0, 0);
 	expected = "o";
-	passed = TestDriver::assertEquals(actual, expected);
+	passed = TestDriver::assertEqualsStdString(actual, expected);
 	
 	actual.erase(0,0);
 	expected = "";
-	passed = TestDriver::assertEquals(actual, expected);
+	passed = TestDriver::assertEqualsStdString(actual, expected);
 	
 	actual = "Hello";
 
 	actual.erase(1, actual.size()-1);
 
 	expected = "H";
-	passed = TestDriver::assertEquals(actual, expected);
+	passed = TestDriver::assertEqualsStdString(actual, expected);
 	
 	return passed;
 }
@@ -178,7 +185,7 @@ bool Tests::testIteratorGet(){
 	MyString::iterator iter = a.begin();
 	char actual = *iter;
 	
-	return TestDriver::assertEqualsPrimitive(actual, 'H');
+	return TestDriver::assertEquals(actual, 'H');
 }
 
 bool Tests::testIteratorAdvance(){
@@ -187,7 +194,7 @@ bool Tests::testIteratorAdvance(){
 	iter++;
 	char actual = *iter;
 	
-	return TestDriver::assertEqualsPrimitive(actual, 'e');
+	return TestDriver::assertEquals(actual, 'e');
 }
 
 bool Tests::testIterate(){
@@ -198,7 +205,7 @@ bool Tests::testIterate(){
 	
 	for(MyString::iterator iter = a.begin(); iter != a.end(); ++iter){
 		char actual = *iter;
-		if(!TestDriver::assertEqualsPrimitive(actual, array[i])){
+		if(!TestDriver::assertEquals(actual, array[i])){
 			passed = false;
 			break;
 		}
@@ -223,12 +230,12 @@ bool Tests::testBracketOperatorGet(){
     MyString a = "Hello";
 	char actual = a[0];
 	
-	passed = TestDriver::assertEqualsPrimitive(actual, 'H');
+	passed = TestDriver::assertEquals(actual, 'H');
 	actual = a[4];
-	passed = TestDriver::assertEqualsPrimitive(actual, 'o');
+	passed = TestDriver::assertEquals(actual, 'o');
 	
 	actual = a[2];
-	passed = TestDriver::assertEqualsPrimitive(actual, 'l');
+	passed = TestDriver::assertEquals(actual, 'l');
 	
 	return passed;
 }
@@ -245,12 +252,12 @@ bool Tests::testEqualityOperator(){
     MyString first = "Hello";
 	MyString other = "Hello";
 	
-	passed = TestDriver::assertEqualsPrimitive(first, other);
+	passed = TestDriver::assertEquals(first, other);
 	
 	first = "";
 	other = "";
 	
-	passed = TestDriver::assertEqualsPrimitive(first, other);
+	passed = TestDriver::assertEquals(first, other);
 	
 	return passed;
 }
