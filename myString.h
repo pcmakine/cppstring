@@ -5,7 +5,6 @@
 class MyString{
 
 public:
-	static bool debug;
 	MyString();
 
     MyString(const char *s);

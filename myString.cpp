@@ -3,16 +3,11 @@
 #include <iostream>
 #include <stdexcept>
 
-bool MyString::debug = false;
-
 MyString::MyString() : MyString(""){
 }
 
 MyString::MyString(const char* str):
 	sz(strlen(str)), arr(new char[sz+1]){
-	if(debug){
-		std::cout << "constructor called" << std::endl;
-	}
 	try{
 	   std::strncpy(arr, str, sz*sizeof *arr);
 	}catch(...){
@@ -25,17 +20,11 @@ MyString::MyString(const char* str):
 
 MyString::MyString(MyString const& str): 
 	sz(str.size()), arr(new char[str.size()+1]){
-	if(debug){
-		std::cout << "copy constructor called" << std::endl;
-	}
     std::strncpy(arr, str.elements(), (sz+1)*sizeof *arr);
 }
 
 //copy assignment
 MyString& MyString::operator = (MyString const& str){
-	if(debug){
-		std::cout << "copy assignment called" << std::endl;
-	}
 	char* temp = new char[str.size()+1];		//let caller handle possible bad alloc
 	
 	std::strncpy(temp, str.elements(), (str.size()+1)*sizeof *temp);		//+1 to get the end character	
@@ -49,9 +38,6 @@ MyString& MyString::operator = (MyString const& str){
 //move constructor; must be compiled with -std=c++11
 MyString::MyString(MyString&& str)
    :sz{str.sz}, arr{str.arr}{
-   	if(debug){
-		std::cout << "move constructor called" << std::endl;
-	}
 
     str.sz = 0;
     str.arr = nullptr;
@@ -261,9 +247,6 @@ bool MyString::operator!=(const MyString& str){
 }
 
 MyString::~MyString(){
-   	if(debug){
-		std::cout << "destructor called" << std::endl;
-	}
     delete[] arr;
 }
 
